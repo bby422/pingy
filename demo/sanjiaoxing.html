@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>常用计算</title>
+	<link rel="stylesheet" href="./bootsrtap.css">
+	<meta name="viewport" content="width=device-width, initial-scale=0, maximum-scale=1, user-scalable=no">
+</head>
+<body> 
+<div id="id001">	
+	<div class="panel panel-default">
+  		<!-- Default panel contents -->
+	  	<div class="panel-heading">求三角形第三条边 根号a^2+b^2</div>
+	  	<div class="panel-body">
+	  		<input type="number" placeholder="第一条直角边" class="form-control input-lg"  name="bc1">
+	  		<input type="number" placeholder="第二条直角边" class="form-control input-lg" name="bc2">
+			<p><span class="label label-info">斜边长度为：{{Math.sqrt(bc1*bc1+bc2*bc2)}}</span></p>
+	  	</div>
+  	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">圆的半径求圆的面积2πr</div>
+		 <div class="panel-body">
+		  		<input type="number" placeholder="半径" class="form-control input-lg"  name="r1">
+		  		
+				<p><span class="label label-info">圆形面积为：{{2*r1*Math.PI}}</span></p>
+		  </div>
+	</div>
+  	
+  	<div class="panel panel-default">
+		<div class="panel-heading">梯形的面积＝（上底+下底）×高÷2 </div>
+		 <div class="panel-body">
+		  		<input type="number" placeholder="上底" class="form-control input-lg"  name="sd">
+		  		<input type="number" placeholder="下底" class="form-control input-lg"  name="xd">
+		  		<input type="number" placeholder="高" class="form-control input-lg"  name="gao">
+				<p><span class="label label-info">梯形面积为：{{gao*(sd+xd)*0.5}}</span></p>
+		  </div>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">计算器 </div>
+		 <div class="panel-body">
+		  		<input type="text"  class="form-control input-lg"  name="jsq">
+		  		
+				<p><span class="label label-info">结果：{{jsqfn()}}</span></p>
+		  </div>
+	</div>
+  	
+</div>
+
+
+	
+	<script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../dest/pingy.min.js"></script>
+	<script type="text/javascript">
+	$("#id001").pingy(function(session){
+		session.extend({
+			bc1:0,
+			bc2:0,
+			r1:0,
+			sd:0,
+			xd:0,
+			gao:0,
+			jsq:null,
+			jsqfn:function(){
+				var r=null;
+					try{r=eval(this.jsq);}catch(e){}
+				return r;
+			}
+		});
+		session.watch("jsq",function(){
+			session.render("jsqfn");
+		});
+	});
+	</script>
+</body>
+</html>
