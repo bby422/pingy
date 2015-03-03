@@ -83,7 +83,7 @@
             }else if(attrName=="value"){
                 type=71;
                 fn=build(val);
-            }else if(attrName=="y-hide"){
+            }else if(attrName=="y-show"){
                 type=72;
                 fn=buildHide(val);                
             }else{
@@ -125,7 +125,7 @@
     //渲染页面 渲染指定变量相关 多个以逗号隔开
     function render(rvar){
         var nodes1=scope._.nodes;
-        if(rvar){
+        if(typeof rvar == "string"){
             nodes1=[];
             each(rvar.split(","),function(i,t){
                 triggerWatch(t);
@@ -138,7 +138,7 @@
                     }
                 }
             });
-        }else triggerWatch();
+        }else if(rvar==true)triggerWatch();
         each(nodes1,function(i,t){
             switch(t.type){
                 case 1:
@@ -154,8 +154,8 @@
                     $(t.node).val(t.fn(scope));
                     break;
                 case 72:
-                    if(t.fn(scope))$(t.node).hide();
-                    else $(t.node).show();
+                    if(t.fn(scope))$(t.node).show();
+                    else $(t.node).hide();
                     break;    
             }
         });
@@ -166,16 +166,8 @@
             if(n1.indexOf(t)==-1)n1.push(t);
         }
     }
-    //复制对象
-    function clone(original){
-        if(typeof(original)!='object') return original; 
-        if(original==null) return original; 
-        var obj={};
-        for(var key in original)obj[key]=clone(original[key]);
-        return obj;
-    }
     //绑定变量
-    function onchange_(){
+    function vartoscope(){
         var runn=true,scope1=scope;
         scope1.el.on("keyup change",function(e){
             var changeel=$(e.target),
@@ -248,14 +240,35 @@
         b=b||"";
         return a==null?b:a;
     }
+    //初始化变量
+    function initVar(){
+        scope.el.find("[name]").each(function(){
+            var _=$(this)
+            ,vnames=_.attr("name").split(".")
+            ,vl=vnames.length
+            ,tobj=scope;
+            for(var i=0,t;i<vl;i++){
+                t=vnames[i];
+                if(i==vl-1){
+                    if(!(t in tobj))tobj[t]="";
+                    break;
+                }
+                if(!(t in tobj)){
+                    tobj[t]={};
+                    tobj=tobj[t];
+                }
+            }
+        });
+    }
     //element link code
     function pingy(ctrl){
         var _=$(this);
         scope=Scope(_);
+        initVar();
         if(ctrl)ctrl(scope);
         complie(scope.el.get(0));
         scope.render();
-        onchange_();
+        vartoscope();
         return _;
     }
     $.fn.extend({

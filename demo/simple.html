@@ -10,72 +10,23 @@
 			<input type="text" placeholder="我的名字" name="me.name">
 			<input type="text" placeholder="我的年龄" name="me.age">
 		</p>
-		<p>大家好，我是{{me.name}},我今年{{me.age}}岁 <font color="{{me.age>18?'blue':'red'}}">{{me.age>18?"已成年":"未成年"}}</font>!我名字的第一个字符是{{me.first()}}</p>
+		<p>大家好，我是{{me.name}},我今年{{me.age}}岁 <font color="{{me.age>18?'blue':'red'}}">{{me.age>18?"已成年":"未成年"}}</font>!我名字的第一个字符是{{me.name.charAt(0)}}</p>
 		<p>我喜欢
 		<span y-each="aihaos">
 			<input type="checkbox" name="aihaosed" value="{{$value}}">{{$value}}
 		</span> 	
 		</p>
-		<p y-hide="aihaosed.length!=0">我没有爱好</p>
-		<p y-hide="aihaosed.length==0">我有{{aihaosed.length}}个爱好，分别是{{aihaosed.join(",")}}</p>
-	</div>
-	<div id="id002">
-		<p>
-			<input type="text" placeholder="我的名字" name="me.name">
-			<input type="text" placeholder="我的年龄" name="me.age">
-		</p>
-		<p>大家好，我是{{me.name}},我今年{{me.age}}岁 <font color="{{me.age>18?'blue':'red'}}">{{me.age>18?"已成年":"未成年"}}</font>!我名字的第一个字符是{{me.first()}}</p>
-		<p>我喜欢
-		<span y-each="aihaos">
-			<input type="checkbox" name="aihaosed" value="{{$value}}">{{$value}}
-		</span> 	
-		</p>
-		<p y-hide="aihaosed.length!=0">我没有爱好</p>
-		<p y-hide="aihaosed.length==0">我有{{aihaosed.length}}个爱好，分别是{{aihaosed.join(",")}}</p>
+		<p y-show="aihaosed.length==0">我没有爱好</p>
+		<p y-show="aihaosed.length>1">我有{{aihaosed.length}}个爱好，分别是{{aihaosed.join(",")}}</p>
+		<p y-show="aihaosed.length==1">我只有一个爱好，是{{aihaosed.join(",")}}</p>
 	</div>
 	<script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="../dest/pingy.min.js"></script>
+	<script type="text/javascript" src="../src/pingy.js"></script>
 	<script type="text/javascript">
 	$("#id001").pingy(function(session){
 		session.extend({
-			me:{
-				name:"diqye",
-				age:22,
-				first:function(){
-					return this.name.charAt(0);
-				}
-			},
-			aihaosed:[],
-			aihaos:[
-				"看书",
-				"敲代码",
-				"平平"
-			]
-		});
-
-		session.watch("me.name",function(){
-			session.render("me.first");
-		});
-	});
-	$("#id002").pingy(function(session){
-		session.extend({
-			me:{
-				name:"diqye",
-				age:22,
-				first:function(){
-					return this.name.charAt(0);
-				}
-			},
-			aihaosed:[],
-			aihaos:[
-				"看书",
-				"敲代码",
-				"平平"
-			]
-		});
-
-		session.watch("me.name",function(){
-			session.render("me.first");
+			aihaos:["敲代码","kiss","miss"],
+			aihaosed:[]
 		});
 	});
 	</script>
