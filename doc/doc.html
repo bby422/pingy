@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>pingy</title>
+	<link rel="stylesheet" href="bootsrtap.css">
+	<script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../dest/pingy.min.js"></script>
+	<style>
+	.redee{
+		color:red;
+	}
+	.blueee{
+		color:blue;
+	}
+	.container>div{
+		padding-top:10px;
+		padding-left: 5px;
+	}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="bg-success" id="000">
+		<center><h1>Jquery插件pingy</h1></center>
+		<h2>兼容 ie9 chrom firefox, 喜欢库，爱自由，没有规范是最好的规范</h2>
+		<p>源码：<a href="http://git.oschina.net/diqye/pingy">http://git.oschina.net/diqye/pingy</a></p>
+		<p>交流群：426566496 加群验证请写 我是 osc-xx</p>
+		<p><a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=a71b4efe9ba2791091e4d2082dd14449056966b828dde378abfe70ecbc9fb24d"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="Javascript530" title="Javascript530"></a></p>
+		<button class="btn btn-default" y-onclick="sys">{{btntext}}</button>
+		<p y-show="isshow"><img src="./Javascript530.png" alt="javascript" /></p>
+	</div>
+	<script>
+	$("#000").pingy(function(session){
+		session.extend({
+			isshow:false,
+			btntext:"显示群二维码",
+			sys:function(){
+				session.isshow=!session.isshow;
+				if(session.isshow)session.btntext="隐藏群二维码";
+				else session.btntext="显示群二维码";
+				session.render();
+			}
+		});
+	});
+	</script>
+	<h3>1数据驱动HTML</h3>
+	<div class="bg-info">
+		<div id="001" style="display:none;">
+			<p>name:{{name}}</p>
+			<p>author:{{author}}</p>
+			<script type="text/javascript">
+				$("#001").pingy(function(session){
+					session.extend({
+						name:"pingy",
+						author:"AUTHOR:第七页(diqye) 2015年3月6日,  14:03:07 "
+					});
+					//session.extend也可以换成 session.name=xxx;session.author=xxx
+				});
+
+			</script>
+		</div>
+		<button class="btn btn-default cycode">复制代码</button>
+		<pre id="001pre"></pre>
+		<script>$("#001pre").text($("#001").get(0).outerHTML);</script>
+	</div>
+	<h3>2输入项驱动数据</h3>
+	<div class="bg-info">
+		<div id="002" style="display:none;">
+			<input type="text" name="hello" placeHolder="enter">
+			<p>你输入的是：{{hello}}</p>
+			<p>你输入了{{hello.length}}个字符</p>
+
+			<script type="text/javascript">
+				$("#002").pingy();
+			</script>
+		</div>
+		<pre id="002pre"></pre>
+		<script>$("#002pre").text($("#002").get(0).outerHTML);</script>
+	</div>
+	<h3>3复杂点的例子</h3>
+	<div class="bg-info">
+		<div id="003" style="display:none;">
+			<input type="text" name="me.name" placeHolder="输入你的名字">
+			<p><input type="text" name="me.age" placeHolder="输入你的年龄"></p>
+			<p>你的名字是{{me.name}}===你姓{{me.name.charAt(0)}}</p>
+			<p>你今年{{me.age}} <span class="{{me.age>18?'redee':'blueee'}}">{{me.age>18?"已经是成年人":"未成年人"}}</span></p>
+
+			<script type="text/javascript">
+				$("#003").pingy();
+			</script>
+		</div>
+		<pre id="003pre"></pre>
+		<script>$("#003pre").text($("#003").get(0).outerHTML);</script>
+	</div>
+	<h3>4y-each 遍历</h3>
+	<div class="bg-info">
+		<div id="004" style="display:none;">
+			<p>
+				我的爱好:
+				<span y-each="mus" id="004checkbox"><input  type="checkbox" value="{{$value}}" name="museds"/>{{$value}}</span>
+			</p>
+			<p>我有{{museds.length}}个爱好,分别是{{museds.join(",")}}</p>
+			<p>each功能比较单一 适合遍历checkbox select</p>
+			<p><button y-onclick="fn1">click</button></p>
+			<script type="text/javascript">
+				$("#004").pingy(function(session){
+					var num=0;
+					session.extend({
+						mus:["coding","pingping","qq","game"],
+						museds:["qq"],
+						fn1:function(){
+							session.mus.push("yyy"+num++);
+							session.render("mus");
+						}
+					}).watch("mus",function(){
+						session.el.find("#004checkbox input").each(function(i,t){
+							if(session.museds.indexOf($(this).val())!=-1)$(this).attr("checked",true);
+						});
+					});
+				});
+			</script>
+		</div>
+		<pre id="004pre"></pre>
+		<script>$("#004pre").text($("#004").get(0).outerHTML);</script>
+	</div>
+	<h3>5y-show</h3>
+	<div class="bg-info">
+		<div id="005" style="display:none;">
+			<p>
+				我的爱好:
+				<span y-each="mus"><input type="checkbox" value="{{$value}}" name="museds"/>{{$value}}</span>
+			</p>
+			<p y-show="museds.length==0">我没有爱好</p>
+			<p y-show="museds.length==1">我只有一个爱好 是{{museds[0]}}</p>
+			<p y-show="museds.length>1">我有{{museds.length}}个爱好,分别是{{museds.join(",")}}</p>
+			<script type="text/javascript">
+				$("#005").pingy(function(session){
+					session.extend({
+						mus:["coding","pingping","qq","game"],
+						museds:[]
+					});
+				});
+			</script>
+		</div>
+		<pre id="005pre"></pre>
+		<script>$("#005pre").text($("#005").get(0).outerHTML);</script>
+	</div>
+	<h3>6y-onxxx 和 render</h3>
+	<div class="bg-info">
+		<div id="006" style="display:none;">
+			<button y-onclick="showmsg">点击我</button>
+			<p>{{clickmsg}}</p>
+			<p>y-onclick 相当于 $(botton).on('click',fn)</p>
+			<script type="text/javascript">
+				$("#006").pingy(function(session){
+					session.extend({
+						num:0,
+						clickmsg:"",
+						showmsg:function(e){
+							//这里的this的对象 是button
+							var self=session;
+							self.clickmsg="我被点击了"+(++self.num)+"次";
+							self.render("clickmsg");//多个用逗号隔开 渲染全部不传参数 
+						}
+					});
+				});
+			</script>
+		</div>
+		<pre id="006pre"></pre>
+		<script>$("#006pre").text($("#006").get(0).outerHTML);</script>
+	</div>
+	<h3>7watch 和 render</h3>
+	<div class="bg-info">
+		<div id="007" style="display:none;">
+			<p>有时间在写吧</p>
+			<script type="text/javascript">
+				$("#007").pingy();
+			</script>
+		</div>
+		<pre id="007pre"></pre>
+		<script>$("#007pre").text($("#007").get(0).outerHTML);</script>
+	</div>
+	<h3>8 session.el</h3>
+	<div class="bg-info">
+		<div id="008" style="display:none;">
+			<p>session.el就是$("#008")</p>
+			<p>是否相等？{{isequal()}}</p>
+			<script type="text/javascript">
+				var div=$("#008");
+				div.pingy(function(ssion){
+					ssion.extend({
+						isequal:function(){
+							return this.el.get(0)==div.get(0);
+						}
+					});
+				});
+			</script>
+		</div>
+		<pre id="008pre"></pre>
+		<script>$("#008pre").text($("#008").get(0).outerHTML);</script>
+	</div>
+</div>	
+	
+	<script>
+	$(".cycode").on("click",function(e){
+		var _=this;
+		
+		if(event.clipboardData)event.clipboardData.setData("text/plain",$(_).prev().get(0).outHTML);
+		$(_).html("已复制");
+		clearTimeout(_.timeout);
+		_.timeout=setTimeout(function(){
+			$(_).html("复制代码");
+		},2000);
+	});
+	</script>
+</body>
+</html>
