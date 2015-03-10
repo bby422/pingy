@@ -1,4 +1,4 @@
-//平页官方网站
+
 var express=require("express"),
 app=express(),
 server,
@@ -8,7 +8,7 @@ static_dir=process.cwd()+"/public"
 app.use(express.static(static_dir));
 
 app.use(function(req,res,next){
-	res.status(404).send('返回《平页》');
+	res.status(404).send('...');
 });
 
 server=app.listen(port,function(){
