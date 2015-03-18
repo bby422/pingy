@@ -92,7 +92,10 @@
                 fn=buildeach(scope,node.innerHTML,val);
                 t_vars=[trim(val)];
             }else if(q_onReg.test(attrName)){
-                $(node).on(attrName.split("y-on").join(""),scope[val]);
+                var vals=val.split(":");
+                $(node).on(attrName.split("y-on").join(""),function(e){
+                    scope[vals[0]](e,vals.length>1?vals[1]:null);
+                });
                 return;
             }else if(attrName=="value"){
                 type=71;
@@ -136,6 +139,8 @@
                 run(scope._.watchMap[key]);
             }else if(varname.indexOf(key+".")==0){
                 run(scope._.watchMap[key]);
+            }else if(varname.indexOf(key+"[")==0){
+                run(scope._.watchMap[key]);
             }
         }
         function run(ary){
@@ -169,6 +174,7 @@
                     break;
                 case 70:
                     t.node.innerHTML=t.fn(scope);
+                    complie(scope,t.node);
                     break;
                 case 71:
                     $(t.node).val(t.fn(scope));

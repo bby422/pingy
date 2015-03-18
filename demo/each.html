@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="app">
+		<input type="text" placeholder="新的一项" name="newitem" y-onkeyup="keyup" />
+		<ul y-each="itemlist">
+			<li>
+				{{$value}}
+				<button y-onclick="delitemlist:{{$index}}">删除</button>
+			</li>
+		</ul>
+	</div>
+	
+	<script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../src/pingy.js"></script>
+	<script>
+	$("#app").pingy(function(scope){
+		scope.extend({
+			keyup:function(e){
+				if(e.keyCode==13){//回车
+					this.itemlist.unshift(scope.newitem);
+					e.target.value="";
+					this.render("itemlist");
+				}
+			},
+			delitemlist:function(e,a){
+				this.itemlist.splice(a,1);
+				this.render("itemlist");
+			},
+			itemlist:[0,2,2,2,2,2]
+		});
+	});
+	</script>
+</body>
+</html>

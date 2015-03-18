@@ -2,7 +2,7 @@
 var express=require("express"),
 app=express(),
 server,
-static_dir=process.cwd()+"/public"
+static_dir=process.cwd()+""
 ,port=process.env.VMC_APP_PORT||8080;
 
 app.use(express.static(static_dir));
