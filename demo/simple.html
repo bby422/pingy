@@ -1,34 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<title>pingy</title>
+    <meta charset="UTF-8">
+    <title>pingy</title>
 </head>
+
 <body>
-	<div id="id001">
-		<p>
-			<input type="text" placeholder="我的名字" name="me.name">
-			<input type="text" placeholder="我的年龄" name="me.age">
-		</p>
-		<p>大家好，我是{{me.name}},我今年{{me.age}}岁 <font color="{{me.age>18?'blue':'red'}}">{{me.age>18?"已成年":"未成年"}}</font>!我名字的第一个字符是{{me.name.charAt(0)}}</p>
-		<p>我喜欢
-		<span y-each="aihaos">
+    <div id="id001">
+        <p>
+            <input type="text" placeholder="我的名字" name="me.name">
+            <input type="text" placeholder="我的年龄" name="me.age">
+        </p>
+        <p>大家好，我是{{me.name}},我今年{{me.age}}岁
+            <font color="{{me.age>18?'blue':'red'}}">{{me.age>18?"已成年":"未成年"}}</font>!我名字的第一个字符是{{me.name.charAt(0)}}</p>
+        <p>我喜欢
+            <span y-each="aihaos">
 			<input type="checkbox" name="aihaosed" value="{{$value}}">{{$value}}
-		</span> 	
-		</p>
-		<p y-show="aihaosed.length==0">我没有爱好</p>
-		<p y-show="aihaosed.length>1">我有{{aihaosed.length}}个爱好，分别是{{aihaosed.join(",")}}</p>
-		<p y-show="aihaosed.length==1">我只有一个爱好，是{{aihaosed.join(",")}}</p>
-	</div>
-	<script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="../src/pingy.js"></script>
-	<script type="text/javascript">
-	$("#id001").pingy(function(session){
-		session.extend({
-			aihaos:["敲代码","kiss","miss"],
-			aihaosed:[]
-		});
-	});
-	</script>
+		</span>
+        </p>
+        <p y-show="aihaosed.length==0">我没有爱好</p>
+        <p y-show="aihaosed.length>1">我有{{aihaosed.length}}个爱好，分别是{{aihaosed.join(",")}}</p>
+        <p y-show="aihaosed.length==1">我只有一个爱好，是{{aihaosed.join(",")}}</p>
+    </div>
+<!--     <div id="dbind">
+    <input name="tName" type="text" value="{{tCName}}">
+    <input name="tCName" type="text" value="{{tName}}">
+</div> -->
+    <div class="my-test-dbind">
+        <input name="tName" type="text" value="{{tName}}">
+        <input name="tName" type="text" value="{{tName}}">
+    </div>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../src/pingy.js"></script>
+    <script type="text/javascript">
+    $("#id001").pingy(function(session) {
+        session.extend({
+            aihaos: ["敲代码", "kiss", "miss"],
+            aihaosed: []
+        });
+    });
+
+    $(".my-test-dbind").pingy();
+    </script>
 </body>
+
 </html>

@@ -61,7 +61,7 @@
         clearTimeout(scope._._8[rvar]);
         render[rvar]=setTimeout(function(){
             render(scope,rvar,cbk);
-        },100);
+        },0);
     }
     //编译表达式
     function complie(scope,rootnode){
@@ -211,6 +211,8 @@
             lasti,
             fn;
             if(name=="")return;
+            //如果按了ctrl alt shift 则不处理
+            if(e.ctrlKey || e.altKey || e.shiftKey || $.inArray(e.keyCode, [16,17,18]) > -1)return;
             if(changeel.is("[type=radio]")&&!changeel.is(":checked"))return;
             if(changeel.is("[type=checkbox]")){
                 var val=[];
